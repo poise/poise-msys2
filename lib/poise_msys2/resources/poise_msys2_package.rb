@@ -54,6 +54,12 @@ module PoiseMsys2
 
         private
 
+        # Copied from Chef itself because there is no good way to change the
+        # config file path to make it find the MSYS2 pacman config file.
+        # Copyright 2010, Jan Zimmek
+        #
+        # @api private
+        # @return [string]
         def candidate_version
           return @candidate_version if @candidate_version
 
@@ -89,6 +95,10 @@ module PoiseMsys2
           @candidate_version
         end
 
+        # Trick all shell_out related things in the base class in to using
+        # my msys_shell_out instead.
+        #
+        # @api private
         def shell_out(*args)
           if @shell_out_hack_inner
             # This is the real call.
