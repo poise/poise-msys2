@@ -15,6 +15,7 @@
 #
 
 require 'poise_msys2/resources/poise_msys2'
+require 'poise_msys2/resources/poise_msys2_execute'
 require 'poise_msys2/resources/poise_msys2_package'
 
 

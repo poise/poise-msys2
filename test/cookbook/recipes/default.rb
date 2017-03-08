@@ -14,6 +14,21 @@
 # limitations under the License.
 #
 
-include_recipe 'poise-msys2'
+# include_recipe 'poise-msys2'
 
-poise_msys2_package 'nano'
+# poise_msys2_package 'nano'
+
+poise_msys2_execute 'testing' do
+  command ['echo', 'hello world']
+  live_stream true
+end
+
+poise_msys2_execute 'testing' do
+  command ['echo', '$PATH']
+  live_stream true
+end
+
+poise_msys2_execute 'testing' do
+  command 'echo $PATH'
+  live_stream true
+end
