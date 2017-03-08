@@ -17,3 +17,4 @@
 default['poise-msys2']['root'] = "#{ENV['SYSTEMDRIVE']}\\msys2"
 default['poise-msys2']['install_url'] = 'http://downloads.sourceforge.net/project/msys2/Base/%{arch}/msys2-base-%{arch}-%{version}.tar.xz'
 default['poise-msys2']['install_version'] = '20161025'
+default['poise-msys2']['default_recipe'] = 'poise-msys2'

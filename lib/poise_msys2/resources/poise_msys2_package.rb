@@ -45,6 +45,16 @@ module PoiseMsys2
         #   @return [String, nil, false]
         attribute(:root, kind_of: [String, NilClass, FalseClass], default: nil)
 
+        # Hook to force the msys2 install via recipe if needed.
+        def after_created
+          begin
+            parent
+          rescue Poise::Error
+            # Use the default recipe to give us a parent the next time we ask.
+            run_context.include_recipe(node['poise-msys2']['default_recipe'])
+          end
+          super
+        end
       end
 
       # Provider for `poise_msys2_package`.
