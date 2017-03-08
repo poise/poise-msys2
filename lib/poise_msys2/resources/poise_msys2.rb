@@ -80,11 +80,9 @@ module PoiseMsys2
         # @return [void]
         def action_install
           notifying_block do
+            # This will run an upgrade on the first install.
             install_archive
           end
-          # The first time bash is run it sets up a bunch of user files and
-          # support configs. Force this run before we do anything important.
-          msys_shell_out!('exit') unless Chef::Config[:why_run]
         end
 
         # `upgrade` action for `poise_msys2`. Upgrades all system packages.
@@ -92,6 +90,9 @@ module PoiseMsys2
         # @return [void]
         def action_upgrade
           converge_by 'Upgrading MSYS2 packages' do
+            # The first time bash is run it sets up a bunch of user files and
+            # support configs. Force this run before we do anything important.
+            msys_shell_out!('exit')
             # Grab the latest definitions. Should this always run from action_install?
             msys_shell_out!(%w{pacman --sync --refresh --noconfirm})
             # Pass --sysupgrade twice to allow downgrades.
