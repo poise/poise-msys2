@@ -24,7 +24,10 @@ module PoiseMsys2
   module ShellOutMixin
     def msys_shell_out(*cmd, cwd: nil, environment: {}, **options)
       # Work out the root folder.
-      root = if new_resource.respond_to?(:parent)
+      root = if new_resource.respond_to?(:root) && new_resource.root
+        # For the backwards compat on poise_msys2_package.
+        new_resource.root
+      elsif new_resource.respond_to?(:parent)
         new_resource.parent.path
       else
         new_resource.path

@@ -40,7 +40,11 @@ module PoiseMsys2
         provides(:poise_msys2_package)
         actions(:install, :upgrade, :remove)
 
-        # TODO
+        # @!attribute root
+        #   Backwards compat with the msys2_package resource from the mingw cookbook.
+        #   @return [String, nil, false]
+        attribute(:root, kind_of: [String, NilClass, FalseClass], default: nil)
+
       end
 
       # Provider for `poise_msys2_package`.
