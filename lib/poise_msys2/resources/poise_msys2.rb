@@ -45,15 +45,15 @@ module PoiseMsys2
         attribute(:path, kind_of: String, name_attribute: true)
 
         # @!attribute install_url
-        #   URL to download the MSYS2 installer archive. Must point at the
-        #   tar.xz archive, not the executable installer.
+        #   URL template to download the MSYS2 installer archive. Must point at
+        #   the tar.xz archive, not the executable installer.
         #   @return [String]
         attribute(:install_url, kind_of: String, required: true)
 
-        # @!attribute install_url
-        #   Version of the MSYS installer to use.
+        # @!attribute install_version
+        #   Version of the MSYS2 installer to use.
         #   @return [String]
-        attribute(:install_version, kind_of: String, required: true)
+        attribute(:install_version, kind_of: String, default: '')
 
         # Helper method to interpolate the version in the URL.
         #
