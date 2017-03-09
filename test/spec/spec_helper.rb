@@ -16,4 +16,5 @@
 
 require 'poise_boiler/spec_helper'
 require 'poise_msys2'
+require 'poise_archive/cheftie'
 require 'poise_msys2/cheftie'
