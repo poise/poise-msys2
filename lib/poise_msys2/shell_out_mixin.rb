@@ -29,9 +29,12 @@ module PoiseMsys2
     # Folders within the MSYS2 root to use for executable lookups.
     MSYS2_PATH = %w{/usr/local/bin /usr/local/sbin /usr/bin /usr/sbin /bin /sbin}
 
+    private
+
     # Wrapper for `shell_out` to run commands in the MSYS2 environment. All
     # parameters are the same as for `shell_out`.
     #
+    # @api public
     # @see Chef::Mixin:ShellOut#shell_out
     def msys_shell_out(*cmd, cwd: nil, environment: {}, **options)
       # Work out the root folder.
@@ -67,6 +70,7 @@ module PoiseMsys2
     # Wrapper for `shell_out!` to run commands in the MSYS2 environment. All
     # parameters are the same as for `shell_out!`.
     #
+    # @api public
     # @see Chef::Mixin:ShellOut#shell_out!
     def msys_shell_out!(*args)
       msys_shell_out(*args).tap(&:error!)
@@ -74,6 +78,7 @@ module PoiseMsys2
 
     # Find the absolute path to a command within the MSYS2 environment.
     #
+    # @api private
     # @param cmd [String] Command to search.
     # @param root [String] MSYS2 root path to search in.
     # @param path [String, nil] Optional $PATH to use instead of the default
