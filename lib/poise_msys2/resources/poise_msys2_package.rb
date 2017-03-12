@@ -36,7 +36,7 @@ module PoiseMsys2
       # @example
       #   poise_msys2_package 'git'
       class Resource < Chef::Resource::PacmanPackage
-        include Poise(parent: :poise_msys2)
+        include Poise(parent: :poise_msys2, parent_optional: true)
         provides(:poise_msys2_package)
         actions(:install, :upgrade, :remove)
 
@@ -47,11 +47,10 @@ module PoiseMsys2
 
         # Hook to force the msys2 install via recipe if needed.
         def after_created
-          begin
-            parent
-          rescue Poise::Error
+          unless root || parent
             # Use the default recipe to give us a parent the next time we ask.
             run_context.include_recipe(node['poise-msys2']['default_recipe'])
+            @parent = nil
           end
           super
         end
@@ -80,15 +79,16 @@ module PoiseMsys2
           repos = %w{extra core community}
 
           # CHANGES ARE HERE. THE CONFIG FILE PATH.
-          if ::File.exist?("#{new_resource.parent.path}/etc/pacman.conf")
-            pacman = ::File.read("#{new_resource.parent.path}/etc/pacman.conf")
+          root = new_resource.root || new_resource.parent.path
+          if ::File.exist?("#{root}/etc/pacman.conf")
+            pacman = ::File.read("#{root}/etc/pacman.conf")
             repos = pacman.scan(/\[(.+)\]/).flatten
           end
           # /CHANGES
 
           package_repos = repos.map { |r| Regexp.escape(r) }.join("|")
 
-          status = shell_out("pacman", "-Sl", timeout: new_resource.timeout)
+          status = shell_out("pacman", "-Sl", timeout: new_resource.timeout || 900)
           status.stdout.each_line do |line|
             case line
             when /^(#{package_repos}) #{Regexp.escape(new_resource.package_name)} (.+)$/
