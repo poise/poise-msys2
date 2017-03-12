@@ -29,6 +29,14 @@ describe PoiseMsys2::Resources::PoiseMsys2Package do
     allow(File).to receive(:read).with("#{root}/etc/pacman.conf").and_return(fixture_file('pacman.conf'))
   end
 
+  def shell_out_argument(*cmds)
+    if Gem::Requirement.create('>= 12.19').satisfied_by?(Gem::Version.create(Chef::VERSION))
+      cmds + [{timeout: 900}]
+    else
+      [cmds.join(' '), {timeout: 900}]
+    end
+  end
+
   context 'with a parent' do
     recipe do
       poise_msys2 'C:\\msys2'
@@ -36,9 +44,9 @@ describe PoiseMsys2::Resources::PoiseMsys2Package do
     end
 
     it do
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman -Qi nano', timeout: 900).and_return(double(stdout: '', exitstatus: 1))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '-Qi', 'nano')).and_return(double(stdout: '', exitstatus: 1))
       expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman', '-Sl', timeout: 900).and_return(double(stdout: fixture_file('list'), exitstatus: 0))
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman --sync --noconfirm --noprogressbar nano', timeout: 900).and_return(double(error!: nil))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '--sync', '--noconfirm', '--noprogressbar', 'nano')).and_return(double(error!: nil))
       run_chef
     end
   end # /context with a parent
@@ -49,9 +57,9 @@ describe PoiseMsys2::Resources::PoiseMsys2Package do
     end
 
     it do
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman -Qi nano', timeout: 900).and_return(double(stdout: '', exitstatus: 1))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '-Qi', 'nano')).and_return(double(stdout: '', exitstatus: 1))
       expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman', '-Sl', timeout: 900).and_return(double(stdout: fixture_file('list'), exitstatus: 0))
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman --sync --noconfirm --noprogressbar nano', timeout: 900).and_return(double(error!: nil))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '--sync', '--noconfirm', '--noprogressbar', 'nano')).and_return(double(error!: nil))
       run_chef
       is_expected.to install_poise_msys2('C:\\msys2')
     end
@@ -66,9 +74,9 @@ describe PoiseMsys2::Resources::PoiseMsys2Package do
     end
 
     it do
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman -Qi nano', timeout: 900).and_return(double(stdout: '', exitstatus: 1))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '-Qi', 'nano')).and_return(double(stdout: '', exitstatus: 1))
       expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman', '-Sl', timeout: 900).and_return(double(stdout: fixture_file('list'), exitstatus: 0))
-      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with('pacman --sync --noconfirm --noprogressbar nano', timeout: 900).and_return(double(error!: nil))
+      expect_any_instance_of(described_class::Provider).to receive(:shell_out).with(*shell_out_argument('pacman', '--sync', '--noconfirm', '--noprogressbar', 'nano')).and_return(double(error!: nil))
       run_chef
       is_expected.to_not install_poise_msys2('C:\\msys2')
     end
