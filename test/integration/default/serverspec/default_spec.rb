@@ -14,14 +14,14 @@
 # limitations under the License.
 #
 
-poise_msys2_package 'python2'
+require 'serverspec'
+set :backend, :cmd
+set :os, :family => 'windows'
 
-poise_msys2_execute 'python test' do
-  command ['python2', '-c', <<-EOH.strip]
-open('/c/python_test.txt', 'w').write('Hello world\\n')
-EOH
+describe file('/python_test.txt') do
+  its(:content) { is_expected.to eq "Hello world\n" }
 end
 
-poise_msys2_execute 'python test 2' do
-  command %q{python2 -c "open('/c/python_test2.txt', 'w').write('Hello world two\\n')"}
+describe file('/python_test2.txt') do
+  its(:content) { is_expected.to eq "Hello world two\n" }
 end
