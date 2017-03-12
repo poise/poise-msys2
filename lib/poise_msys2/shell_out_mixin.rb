@@ -29,6 +29,10 @@ module PoiseMsys2
     # Folders within the MSYS2 root to use for executable lookups.
     MSYS2_PATH = %w{/usr/local/bin /usr/local/sbin /usr/bin /usr/sbin /bin /sbin}
 
+    # Wrapper for `shell_out` to run commands in the MSYS2 environment. All
+    # parameters are the same as for `shell_out`.
+    #
+    # @see Chef::Mixin:ShellOut#shell_out
     def msys_shell_out(*cmd, cwd: nil, environment: {}, **options)
       # Work out the root folder.
       root = if new_resource.respond_to?(:root) && new_resource.root
@@ -60,10 +64,21 @@ module PoiseMsys2
       poise_shell_out(real_cmd, cwd: cwd, environment: environment, **options)
     end
 
+    # Wrapper for `shell_out!` to run commands in the MSYS2 environment. All
+    # parameters are the same as for `shell_out!`.
+    #
+    # @see Chef::Mixin:ShellOut#shell_out!
     def msys_shell_out!(*args)
       msys_shell_out(*args).tap(&:error!)
     end
 
+    # Find the absolute path to a command within the MSYS2 environment.
+    #
+    # @param cmd [String] Command to search.
+    # @param root [String] MSYS2 root path to search in.
+    # @param path [String, nil] Optional $PATH to use instead of the default
+    #   MYSYS2 paths.
+    # @return [String, false]
     def msys_which(cmd, root, path: nil)
       # If it was already absolute, just return that.
       return cmd if cmd =~ /^(\/|([a-z]:)?\\)/i
