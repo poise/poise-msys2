@@ -111,7 +111,7 @@ with `poise_msys2_package`.
 
 ## Sponsors
 
-Development sponsored by [SAP](https://cloudplatform.sap.com/).
+Development sponsored by [SAP](https://www.sap.com/).
 
 The Poise test server infrastructure is sponsored by [Rackspace](https://rackspace.com/).
 
