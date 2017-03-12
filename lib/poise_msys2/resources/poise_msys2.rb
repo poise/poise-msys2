@@ -61,7 +61,12 @@ module PoiseMsys2
         def full_installer_url
           install_url % {
             version: install_version,
-            arch: node['kernel']['machine'],
+            arch: case node['kernel']['machine']
+                  when 'i386'
+                    'i686'
+                  else
+                    node['kernel']['machine']
+                  end,
           }
         end
       end
