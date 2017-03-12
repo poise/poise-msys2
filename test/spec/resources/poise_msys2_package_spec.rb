@@ -19,7 +19,7 @@ require 'spec_helper'
 describe PoiseMsys2::Resources::PoiseMsys2Package do
   step_into(:poise_msys2_package)
   def fixture_file(path)
-    IO.read(File.expand_path("../data/#{path}", __FILE__))
+    IO.read(File.expand_path("../../fixtures/#{path}", __FILE__))
   end
   let(:root) { 'C:\\msys2' }
   before do

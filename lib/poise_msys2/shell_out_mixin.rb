@@ -58,7 +58,7 @@ module PoiseMsys2
       cmd.compact!
       real_cmd = if cmd.length == 1
         # Running in shell wrapper mode to mimic Ruby.
-        ["#{root}/usr/bin/bash.exe", '-l', '-c', cmd.first]
+        ["#{root}\\usr\\bin\\bash.exe", '-l', '-c', cmd.first]
       else
         # Try and do a path-ish lookup.
         [msys_which(cmd.first, root, path: environment['PATH']) || cmd.first] + cmd.drop(1)
