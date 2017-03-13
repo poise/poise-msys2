@@ -8,4 +8,4 @@ coverage/
 pkg/
 .yardoc/
 doc/
-
+test/ec2/*.key
