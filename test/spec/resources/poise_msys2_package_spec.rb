@@ -30,7 +30,10 @@ describe PoiseMsys2::Resources::PoiseMsys2Package do
   end
 
   def shell_out_argument(*cmds)
-    if Gem::Requirement.create('>= 12.19').satisfied_by?(Gem::Version.create(Chef::VERSION))
+    case Gem::Version.create(Chef::VERSION)
+    when Gem::Requirement.create('< 12.4')
+      [cmds.join(' ')]
+    when Gem::Requirement.create('>= 12.19')
       cmds + [{timeout: 900}]
     else
       [cmds.join(' '), {timeout: 900}]
