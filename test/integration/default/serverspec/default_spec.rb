@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+Kernel.send(:define_method, :warn) {|*args| nil }
 require 'serverspec'
 set :backend, :cmd
 set :os, :family => 'windows'
